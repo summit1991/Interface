@@ -1,109 +1,95 @@
 import { Fragment } from "react";
-import {
-  Avatar,
-  Badge,
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-  Container,
-  Divider,
-  Grid,
-  Paper, Stack,
-  Typography
-} from "@mui/material";
+import { Avatar, Box, Card, CardContent, Chip, Container, Divider, Grid, Link, Stack, Typography } from "@mui/material";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import MailIcon from '@mui/icons-material/Mail';
 
 export default function Introduce({ children }) {
   return (
     <Fragment>
       <Container fixed maxWidth='lg' sx={{ padding: 3 }}>
         <header>
-          <Card elevation={0} sx={{ display: 'flex' }}>
+          <Card elevation={0} sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <Avatar
-              /*component="img"*/
-              sx={{ width: 300, height: 250 }}
+              sx={{ width: 300, height: 250, flexGrow: 1 }}
               src="/profile_image2.jpeg"
-              alt="Live from space album cover"
+              alt="프로필 사진"
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="h5">게으름을 추구하는 개발자 서상훈입니다.</Typography>
-                {/*<Typography component="div" variant="h5">퇴물이 되고 싶지 않은 개발자 서상훈입니다.</Typography>
-                <Typography component="div" variant="h5">고이지 않고 싶지 않은 개발자 서상훈입니다.</Typography>*/}
-                <Typography variant="subtitle1" color="text.secondary" component="div">
-                  달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야
-                  달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야
-                  달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야
-                  달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야달라이쩜메야
+            <Box sx={{ display: 'flex', flexDirection: 'column', flex: '4 0 auto' }}>
+              <CardContent sx={{}}>
+                <Typography display={"flex"}>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>문제해결과정 자체</Typography>
+                  <Typography variant="h5">가 즐겁습니다.</Typography>
+                </Typography>
+                <Typography variant="body1" component="div">
+                  달라이 쩜메이
                 </Typography>
               </CardContent>
             </Box>
           </Card>
         </header>
-        <Divider sx={{ marginY: 2 }}/>
         <main>
+          <Divider variant='middle' sx={{ marginY: 3 }}/>
           <section>
-            <Grid container sx={{ marginY: 2, paddingX: 2 }}>
-              <Grid item xs={12} md={6}>
+            <Grid container sx={{ marginY: 3, paddingX: 2 }}>
+              <Grid item xs={12} md={5}>
                 <article>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <header>
                       <Typography component="div" variant="h6" color="primary"><strong>서상훈</strong></Typography>
                     </header>
-                    <Box><b style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>1991. 05. 10</b> 광주광역시</Box>
-                    <Box><b style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>2017 ~
-                      2019</b> 광주동신고등학교</Box>
-                    <Box><b style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>2010 ~ 2015</b> 전남대학교
-                      컴퓨터정보통신공학</Box>
-                    <Box><b style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>2011 ~ 2012</b> 진도대대
-                      군사정보</Box>
+                    <Box><span style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>1991. 05. 10</span>
+                      <b>광주광역시</b></Box>
+                    <Box><span style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>2017 ~ 2019</span>
+                      <b>광주동신고등학교</b></Box>
+                    <Box><span style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>2010 ~ 2015</span> <b>전남대학교
+                      컴퓨터정보통신공학</b></Box>
+                    <Box><span style={{ fontVariantNumeric: 'tabular-nums', marginRight: 6 }}>2011 ~ 2012</span> <b>진도대대
+                      군사정보</b></Box>
 
                     <Box sx={{ marginTop: 2 }}>
                       <Box><b>Email:</b> <a href="mailto:tkdgns1991@gmail.com">tkdgns1991@gmail.com</a></Box>
                       <Box><b>Address:</b> 서울특별시 동작구</Box>
                     </Box>
-                    <Box sx={{ textAlign: 'right' }}>
-                      <a href="https://github.com/summit1991"
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         style={{ display: 'inline-block' }}>
-                        <GitHubIcon sx={{ marginRight: 2, fontSize: 35 }}/></a>
-                      <a href="https://www.linkedin.com/in/%EC%83%81%ED%9B%88-%EC%84%9C-423673179/"
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         style={{ display: 'inline-block' }}>
-                        <LinkedInIcon sx={{ marginRight: 2, fontSize: 35 }}/></a>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Link href="https://github.com/summit1991"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                      ><GitHubIcon sx={{ fontSize: 35, color: 'text.primary' }}/></Link>
+                      <Divider orientation={"vertical"} flexItem sx={{marginX: 2}}/>
+                      <Link href="https://www.linkedin.com/in/%EC%83%81%ED%9B%88-%EC%84%9C-423673179/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                      ><LinkedInIcon sx={{ fontSize: 35, color: 'primary.main' }}/></Link>
                     </Box>
                   </Box>
                 </article>
               </Grid>
               <Grid item xs={12} md={6} display={{ xs: 'block', md: 'none' }}>
-                <Divider sx={{marginY: 2}}/>
+                <Divider sx={{ marginY: 2 }}/>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={7}>
                 <article>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <header>
                       <Typography component="div" variant="h6" color="primary"><strong>Certificate</strong></Typography>
                     </header>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <b>정보처리기사</b>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold' }}>정보처리기사</Typography>
                       <Divider sx={{ flex: '1 1 0px', marginX: 2 }}/>
-                      <small style={{ fontVariantNumeric: 'tabular-nums' }}>2015</small>
+                      <Typography variant="body2"
+                                  sx={{ fontVariantNumeric: 'tabular-nums', color: 'text.secondary' }}>2015</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <b>TOEIC 880</b>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold' }}>TOEIC 880</Typography>
                       <Divider sx={{ flex: '1 1 0px', marginX: 2 }}/>
-                      <small style={{ fontVariantNumeric: 'tabular-nums' }}>2016</small>
+                      <Typography variant="body2"
+                                  sx={{ fontVariantNumeric: 'tabular-nums', color: 'text.secondary' }}>2016</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <b>TOEIC Speaking Level 5</b>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold' }}>TOEIC Speaking Level 5</Typography>
                       <Divider sx={{ flex: '1 1 0px', marginX: 2 }}/>
-                      <small style={{ fontVariantNumeric: 'tabular-nums' }}>2016</small>
+                      <Typography variant="body2"
+                                  sx={{ fontVariantNumeric: 'tabular-nums', color: 'text.secondary' }}>2016</Typography>
                     </Box>
                     <Box><small>그 외 문서실문사, 워드프로세서 등</small></Box>
                   </Box>
@@ -111,10 +97,66 @@ export default function Introduce({ children }) {
               </Grid>
             </Grid>
           </section>
-          <Divider sx={{ marginY: 2 }}/>
+          <Divider variant='middle' sx={{ marginY: 3 }}/>
           <section>
-            <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-              <Box sx={{ flex: '1 1 0px', paddingX: 2 }}>
+            <Grid container sx={{ paddingX: 2 }}>
+              <Grid item xs={12} md={5}>
+                <section>
+                  <article>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <header>
+                        <Typography component="div" variant="h6" color="primary"><strong>Skill</strong></Typography>
+                      </header>
+                      <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                          <b>백엔드</b>
+                          <Stack spacing={0.25}>
+                            <small>- <Chip label='Kotlin' color='primary' size='small'/></small>
+                            <small>- <Chip label='Java' color='primary' size='small'/></small>
+                            <small>- <Chip label='Spring' color='primary' size='small'/></small>
+                            <small>- <Chip label='Hibernate' color='primary' size='small'/></small>
+                            <small>- <Chip label='RabbitMQ' color='primary' size='small'/></small>
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <b>프론트엔드</b>
+                          <Stack spacing={0.25}>
+                            <small>- <Chip label='HTML' color='warning' size='small'/></small>
+                            <small>- <Chip label='CSS' color='warning' size='small'/></small>
+                            <small>- <Chip label='Javascript' color='warning' size='small'/></small>
+                            <small>- <Chip label='React' color='warning' size='small'/></small>
+                            <small>- <Chip label='NEXT.JS' color='warning' size='small'/></small>
+                            <small>- <Chip label='Bootstrap' color='warning' size='small'/></small>
+                            <small>- <Chip label='MaterialUI' color='warning' size='small'/></small>
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <b>데이터베이스</b>
+                          <Stack spacing={0.25}>
+                            <small>- <Chip label='Mysql' color='success' size='small'/></small>
+                            <small>- <Chip label='Redis' color='success' size='small'/></small>
+                            <small>- <Chip label='ElasticSearch' color='success' size='small'/></small>
+                            <small>- <Chip label='DynamoDB' color='success' size='small'/></small>
+                            <small>- <Chip label='Oracle' color='success' size='small'/></small>
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <b>서버관리</b>
+                          <Stack spacing={0.25}>
+                            <small>- <Chip label='AWS' color='secondary' size='small'/></small>
+                            <small>- <Chip label='Docker' color='secondary' size='small'/></small>
+                            <small>- <Chip label='ShellScript' color='secondary' size='small'/></small>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </article>
+                </section>
+              </Grid>
+              <Grid item xs={12} md={6} display={{ xs: 'block', md: 'none' }}>
+                <Divider sx={{ marginY: 3 }}/>
+              </Grid>
+              <Grid item xs={12} md={7}>
                 <section>
                   <article>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -232,62 +274,8 @@ export default function Introduce({ children }) {
                     </Box>
                   </article>
                 </section>
-              </Box>
-              <Divider orientation="vertical" flexItem/>
-              <Box sx={{ flex: '1 1 0px', paddingX: 2 }}>
-                <section>
-                  <article>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <header>
-                        <Typography component="div" variant="h6" color="primary"><strong>Skill</strong></Typography>
-                      </header>
-                      <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                          <b>백엔드</b>
-                          <Stack spacing={0.25}>
-                            <small>- <Chip label='Kotlin' color='primary' size='small'/></small>
-                            <small>- <Chip label='Java' color='primary' size='small'/></small>
-                            <small>- <Chip label='Spring' color='primary' size='small'/></small>
-                            <small>- <Chip label='Hibernate' color='primary' size='small'/></small>
-                            <small>- <Chip label='RabbitMQ' color='primary' size='small'/></small>
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <b>프론트엔드</b>
-                          <Stack spacing={0.25}>
-                            <small>- <Chip label='HTML' color='warning' size='small'/></small>
-                            <small>- <Chip label='CSS' color='warning' size='small'/></small>
-                            <small>- <Chip label='Javascript' color='warning' size='small'/></small>
-                            <small>- <Chip label='React' color='warning' size='small'/></small>
-                            <small>- <Chip label='NEXT.JS' color='warning' size='small'/></small>
-                            <small>- <Chip label='Bootstrap' color='warning' size='small'/></small>
-                            <small>- <Chip label='MaterialUI' color='warning' size='small'/></small>
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <b>데이터베이스</b>
-                          <Stack spacing={0.25}>
-                            <small>- <Chip label='Mysql' color='success' size='small'/></small>
-                            <small>- <Chip label='Redis' color='success' size='small'/></small>
-                            <small>- <Chip label='ElasticSearch' color='success' size='small'/></small>
-                            <small>- <Chip label='DynamoDB' color='success' size='small'/></small>
-                            <small>- <Chip label='Oracle' color='success' size='small'/></small>
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <b>서버관리</b>
-                          <Stack spacing={0.25}>
-                            <small>- <Chip label='AWS' color='secondary' size='small'/></small>
-                            <small>- <Chip label='Docker' color='secondary' size='small'/></small>
-                            <small>- <Chip label='ShellScript' color='secondary' size='small'/></small>
-                          </Stack>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </article>
-                </section>
-              </Box>
-            </Box>
+              </Grid>
+            </Grid>
           </section>
         </main>
       </Container>
