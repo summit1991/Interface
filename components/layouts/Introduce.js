@@ -19,20 +19,16 @@ export default function Introduce({ children }) {
 
             <Grid item xs={12} md={7} sx={{ paddingX: 2 }}>
               <Typography variant='div' display={"flex"}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>해결해 가는 과정 자체</Typography>
-                <Typography variant="h5">가 즐겁습니다.</Typography>
+                <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}></Typography>
+                <Typography variant="h5"></Typography>
               </Typography>
-              <Typography paragraph='true' variant="body1">다음은 공동주택 투표 서비스를 개발기 중 일부입니다.</Typography>
-              <Typography paragraph='true' variant="body1">
-                바야흐로 기술의 시대, 아파트 앱으로 투표에 참여할 수 없다는 건 상상하기가 힘든 일입니다. 투표기능 따위야 구글폼을 쓱 훑어보면 대충 각도가 나온다고 어림짐작됩니다.
-                그걸로는 부족하다는 걸 깨닫게 됩니다. 모든 주민들이 우리 앱을 사용하는 것은 아닙니다. 따라서 미사용자에게는 문자 형태로 참여하게 하자라는 방법이 떠오릅니다. 조금 더 고민해보니
-                할머니와 할아버지가 생각이 납니다. 그렇습니다. 기술과의 접근성 문제가 있는 분들도 계십니다. 결국 현장투표, 방문투표 형태도 필요합니다. 결국 앱 이외의 수단들은 별도의 인증이 없으니
-                부정투표를 방지하기 위한 보안조치도 별도로 필요합니다.
+              <Typography paragraph variant="body1"></Typography>
+              <Typography paragraph variant="body1">
+
               </Typography>
-              <Typography paragraph='true' variant="body1">
-                이젠 수도관도 길어지고 수도꼭지 갯수도 증가했습니다. 걱정이 늘어나기 시작합니다. 하지만 한 편으로는 경외심이 생깁니다. 기존 방식은 불편함은 있으나 본질적인 요구들에 모두 순응하고
-                있었습니다. 재미있습니다. 새삼 우리의 일상을 순서대로 인지하고 글과 말로 옮겨보면 문제로 보이는 것들이 드러납니다. 어떤 지점에서는 이렇게 멍청하게 행동하고 있었나라는 생각도 듭니다.
-                이제 현실의 요구사항은 명확해졌습니다. 설계도를 그리고 도구를 준비하고 제품을 만들 시간입니다.</Typography>
+              <Typography paragraph variant="body1">
+
+              </Typography>
             </Grid>
           </Grid>
         </header>
