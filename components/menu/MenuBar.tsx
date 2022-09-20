@@ -122,34 +122,47 @@ const LeafMenuItem = props => {
   const item = props.item
   const pathname = props.pathname
 
-  const selectedMenuItemId = props.selectedMenuItemId
-
-  /*const flattenMenuItemById = props.flattenMenuItemById
+  const flattenMenuItemById = props.flattenMenuItemById
   const setFlattenMenuItemById = props.setFlattenMenuItemById
   const selectedMenuItemId = props.selectedMenuItemId
   const setSelectedMenuItemId = props.setSelectedMenuItemId
 
-  setFlattenMenuItemById()*/
 
-  /*if (!selectedMenuItemId && pathname === item.path) {
-    useEffect(() => {
-      setSelectedMenuItemId(item.id)
-      // 중계메뉴를 모두 활성화
+  const onClick = id => {
+    // TODO 옵션에 따라 선택된 단말 이외에 열려있는 트리를 모두 닫는 거 추가. 기본 정책은 그냥 둔다.
+    const result = {}
+
+    const selectedMenuIds = [id]
+    let parentId = flattenMenuItemById[id]?.parentId
+    while (parentId) {
+      selectedMenuIds.push(parentId)
+      parentId = flattenMenuItemById[parentId]?.parentId
+    }
+
+    Object.entries(flattenMenuItemById).forEach(menu => {
+      if (selectedMenuIds.includes(menu[0])) {
+        menu[1].selected = true
+        result[menu[0]] = menu[1]
+      } else {
+        // 선택된 친구의 id 포함 부모까지 다 구해와야
+        menu[1].selected = false
+        result[menu[0]] = menu[1]
+      }
     })
-  }
 
-  const onClick = (id) => {
+
+    console.log(result)
+    setFlattenMenuItemById({
+      ...result
+    })
+
     setSelectedMenuItemId(id)
-    // 중계메뉴를 모두 활성화
-    // 선택된 메뉴 트리를 제외하고 닫을 수 있는 기능 on/off
-  }*/
-
-// console.log(item.id, selectedMenuItemId)
+  }
 
   return (
     <Link href={item.path} passHref>
       <ListItem disablePadding key={item.id}>
-        <ListItemButton selected={item.id === selectedMenuItemId}>
+        <ListItemButton selected={item.id === selectedMenuItemId} onClick={() => onClick(item.id)}>
           <ListItemIcon>
             <Icon>inbox</Icon>
           </ListItemIcon>
@@ -172,17 +185,18 @@ const IntermediateMenuItem = props => {
 
 
   const onClickItem = id => {
-    // 선택한 트리를 제외하고는 모두 닫을 수도 있고
-    // 그냥 둘 수도 있다.
-    // 옵션으로 두면 되겠지만 일단 그냥 두는 것을 default
+    // TODO 선택한 트리를 제외하고는 모두 닫을 수도 있는 옵션 추가. 기본 정책은 그냥 둔다.
 
     const meStatus = flattenMenuItemById[id]
 
     meStatus.selected = !meStatus.selected
-    
+
+    const result = { }
+    result[id] = meStatus
+
     setFlattenMenuItemById({
       ...flattenMenuItemById,
-      meStatus
+      ...result
     })
   }
 
