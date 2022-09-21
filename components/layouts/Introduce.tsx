@@ -18,7 +18,7 @@ export default function Introduce({ children }) {
             </Grid>
 
             <Grid item xs={12} md={7} sx={{ paddingX: 2 }}>
-              <Typography variant='div' display={"flex"}>
+              <Typography  display={"flex"}>
                 <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}></Typography>
                 <Typography variant="h5"></Typography>
               </Typography>

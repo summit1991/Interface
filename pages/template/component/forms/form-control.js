@@ -3,7 +3,7 @@ import Playground from "../../../../components/layouts/Playground";
 export default function formControl() {
   return (
     <div>
-      <div>아코뎐</div>
+      <div>폼컨트롤</div>
     </div>
   )
 }

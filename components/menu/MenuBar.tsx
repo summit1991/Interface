@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import {
   Collapse,
   List,
@@ -10,39 +11,24 @@ import {
   Toolbar
 } from "@mui/material";
 import Icon from '@mui/material/Icon'
-
 import useSWR from 'swr'
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {useEffect} from "react";
 
+/**
+ * TODO 어뷰징 방지 -> 눌러진 단말의 경우 3초 정도 클릭 불가처리
+ */
 const fetcher = () => fetch('http://localhost:8083/v1/menus').then((res) => res.json())
-
 export default function MenuBar() {
   const currentPath = useRouter().pathname
-  const [flattenMenuItemById, setFlattenMenuItemById] = React.useState(undefined)
-  const [selectedMenuItemId, setSelectedMenuItemId] = React.useState(undefined)
+  const [menuStatusMap, setMenuStatusMap] = React.useState(undefined)
   const {data, error} = useSWR('http://localhost:8083/v1/menus', fetcher)
 
-  useEffect(() => {
-    if (!flattenMenuItemById && !selectedMenuItemId && data) {
-      const map = {}
-      createFlattenMenuItemMap(map, currentPath, data)
-      const id = Object.entries(map).find(ele => ele[1].leaf && ele[1].selected)
-      setFlattenMenuItemById(map)
-      setSelectedMenuItemId(id[0])
-    }
-  })
-
-  /*
-  console.log(flattenMenuItemById)
-  console.log(selectedMenuItemId)
-  */
-
+  useEffect(() => initializeMenuStatuses(data, currentPath, setMenuStatusMap), [data]) // 최초에 한 번 실행, data 변경되고 실행, 안에서 선택된 메뉴 바꾸고 실행
 
   if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
+  if (!menuStatusMap) return <div>Loading...</div>
 
   return (
     <>
@@ -57,7 +43,7 @@ export default function MenuBar() {
                 <ListSubheader component={"div"}>{group.title}</ListSubheader>
               }
             >
-              {renderItems(items, currentPath, flattenMenuItemById, setFlattenMenuItemById, selectedMenuItemId, setSelectedMenuItemId)}
+              {renderMenuItems(items, menuStatusMap, setMenuStatusMap)}
             </List>
           )
         })
@@ -66,103 +52,59 @@ export default function MenuBar() {
     </>
   )
 }
-
-const createFlattenMenuItemMap = (map, currentPath, groups) => {
-  groups.forEach(group => recursiveSearchMenuItem(map, currentPath, group.items, undefined))
+const initializeMenuStatuses = (data, initialPath, setMenuStatusMap) => {
+  if (data) {
+    const initializingMenuStatusMap = {}
+    data.forEach(group => initializeMenuStatusRecursively(initializingMenuStatusMap, initialPath, group.items, undefined))
+    setMenuStatusMap(initializingMenuStatusMap)
+  }
 }
-
-const recursiveSearchMenuItem = (map, currentPath, items, parentId) => {
-  items.forEach(item => {
-    const isLeafItem = !item.children.length
+const initializeMenuStatusRecursively = (initializingMenuStatusMap, initialPath, menuItems, parentId) => {
+  menuItems.forEach(menuItem => {
+    const isLeafItem = !menuItem.children.length
     if (isLeafItem) {
-      map[item.id] = {
-        id: item.id,
+      initializingMenuStatusMap[menuItem.id] = {
+        id: menuItem.id,
         leaf: true,
-        selected: item.path === currentPath,
+        selected: menuItem.path === initialPath,
         parentId
       }
     } else {
-      map[item.id] = {
-        id: item.id,
+      initializingMenuStatusMap[menuItem.id] = {
+        id: menuItem.id,
         leaf: false,
-        selected: currentPath.startsWith(item.path),
+        selected: initialPath.startsWith(menuItem.path),
         parentId
       }
-      recursiveSearchMenuItem(map, currentPath, item.children, item.id)
+      initializeMenuStatusRecursively(initializingMenuStatusMap, initialPath, menuItem.children, menuItem.id)
     }
   })
 }
-
-const renderItems = (items, pathname, flattenMenuItemById, setFlattenMenuItemById, selectedMenuItemId, setSelectedMenuItemId) => {
-  return items.map(item => {
+const renderMenuItems = (menuItems, menuStatusMap, setMenuStatusMap) => {
+  return menuItems.map(item => {
     const isLeafItem = !item.children?.length
-    if (isLeafItem)
+    if (isLeafItem) {
       return <LeafMenuItem key={item.id}
                            item={item}
-                           pathname={pathname}
-                           flattenMenuItemById={flattenMenuItemById}
-                           setFlattenMenuItemById={setFlattenMenuItemById}
-                           selectedMenuItemId={selectedMenuItemId}
-                           setSelectedMenuItemId={setSelectedMenuItemId}
+                           menuStatusMap={menuStatusMap}
+                           setMenuStatusMap={setMenuStatusMap}
       />
-    else {
+    } else {
       return <IntermediateMenuItem key={item.id}
                                    item={item}
-                                   pathname={pathname}
-                                   flattenMenuItemById={flattenMenuItemById}
-                                   setFlattenMenuItemById={setFlattenMenuItemById}
-                                   selectedMenuItemId={selectedMenuItemId}
-                                   setSelectedMenuItemId={setSelectedMenuItemId}
+                                   menuStatusMap={menuStatusMap}
+                                   setMenuStatusMap={setMenuStatusMap}
       />
     }
   })
 }
 
-const LeafMenuItem = props => {
-  const item = props.item
-  const pathname = props.pathname
-
-  const flattenMenuItemById = props.flattenMenuItemById
-  const setFlattenMenuItemById = props.setFlattenMenuItemById
-  const selectedMenuItemId = props.selectedMenuItemId
-  const setSelectedMenuItemId = props.setSelectedMenuItemId
-
-
-  const onClick = id => {
-    // TODO 옵션에 따라 선택된 단말 이외에 열려있는 트리를 모두 닫는 거 추가. 기본 정책은 그냥 둔다.
-    const result = {}
-
-    const selectedMenuIds = [id]
-    let parentId = flattenMenuItemById[id]?.parentId
-    while (parentId) {
-      selectedMenuIds.push(parentId)
-      parentId = flattenMenuItemById[parentId]?.parentId
-    }
-
-    Object.entries(flattenMenuItemById).forEach(menu => {
-      if (selectedMenuIds.includes(menu[0])) {
-        menu[1].selected = true
-        result[menu[0]] = menu[1]
-      } else {
-        // 선택된 친구의 id 포함 부모까지 다 구해와야
-        menu[1].selected = false
-        result[menu[0]] = menu[1]
-      }
-    })
-
-
-    console.log(result)
-    setFlattenMenuItemById({
-      ...result
-    })
-
-    setSelectedMenuItemId(id)
-  }
-
+const LeafMenuItem = ({item, menuStatusMap, setMenuStatusMap}) => {
   return (
-    <Link href={item.path} passHref>
+    <Link href={item.path}>
       <ListItem disablePadding key={item.id}>
-        <ListItemButton selected={item.id === selectedMenuItemId} onClick={() => onClick(item.id)}>
+        <ListItemButton selected={menuStatusMap[item.id]?.selected}
+                        onClick={() => onClickLeafMenuItem(item.id, menuStatusMap, setMenuStatusMap)}>
           <ListItemIcon>
             <Icon>inbox</Icon>
           </ListItemIcon>
@@ -173,52 +115,56 @@ const LeafMenuItem = props => {
     </Link>
   )
 }
+const onClickLeafMenuItem = (id, menuStatusMap, setMenuStatusMap) => { // TODO 옵션화 (다른 단말을 누르더라도 기존에 열린 중계를 닫지 않는)
+  const result = {}
+  const selectedMenuIds = [id]
 
-const IntermediateMenuItem = props => {
-  const item = props.item
-  const pathname = props.pathname
-
-  const flattenMenuItemById = props.flattenMenuItemById
-  const setFlattenMenuItemById = props.setFlattenMenuItemById
-  const selectedMenuItemId = props.selectedMenuItemId
-  const setSelectedMenuItemId = props.setSelectedMenuItemId
-
-
-  const onClickItem = id => {
-    // TODO 선택한 트리를 제외하고는 모두 닫을 수도 있는 옵션 추가. 기본 정책은 그냥 둔다.
-
-    const meStatus = flattenMenuItemById[id]
-
-    meStatus.selected = !meStatus.selected
-
-    const result = { }
-    result[id] = meStatus
-
-    setFlattenMenuItemById({
-      ...flattenMenuItemById,
-      ...result
-    })
+  let parentId = menuStatusMap[id]?.parentId
+  while (parentId) {
+    selectedMenuIds.push(parentId)
+    parentId = menuStatusMap[parentId]?.parentId
   }
 
-  let selected = flattenMenuItemById && flattenMenuItemById[item.id]?.selected
+  Object.entries(menuStatusMap).forEach((menu: object) => {
+    if (selectedMenuIds.includes(menu[0])) {
+      menu[1].selected = true
+      result[menu[0]] = menu[1]
+    } else {
+      // 선택된 친구의 id 포함 부모까지 다 구해와야
+      menu[1].selected = false
+      result[menu[0]] = menu[1]
+    }
+  })
 
-  const haveChildren = item.children?.length
+  console.log(1)
+
+  setMenuStatusMap({
+    ...result
+  })
+}
+
+const IntermediateMenuItem = ({item, menuStatusMap, setMenuStatusMap}) => {
   return (
     <>
       <ListItem disablePadding>
-        <ListItemButton onClick={() => onClickItem(item.id)}>
+        <ListItemButton onClick={() => onClickIntermediateMenuItem(item.id, menuStatusMap, setMenuStatusMap)}>
           <ListItemIcon>
             <Icon>inbox</Icon>
           </ListItemIcon>
           <ListItemText primary={item.name}/>
-          {selected ? <ExpandLess/> : <ExpandMore/>}
+          {menuStatusMap[item.id]?.selected ? <ExpandLess/> : <ExpandMore/>}
         </ListItemButton>
       </ListItem>
-      <Collapse in={selected} timeout="auto" unmountOnExit>
+      <Collapse in={menuStatusMap[item.id]?.selected} timeout="auto" unmountOnExit>
         <List component={"div"} disablePadding key={item.children.length}>
-          {haveChildren ? renderItems(item.children, pathname, flattenMenuItemById, setFlattenMenuItemById, selectedMenuItemId, setSelectedMenuItemId) : ''}
+          {(item.children?.length ?? false) ? renderMenuItems(item.children, menuStatusMap, setMenuStatusMap) : ''}
         </List>
       </Collapse>
     </>
   )
+}
+const onClickIntermediateMenuItem = (id, menuStatusMap, setMenuStatusMap) => { // TODO 선택한 트리를 제외하고는 모두 닫을 수도 있는 옵션 추가. 기본 정책은 그냥 둔다.
+  menuStatusMap[id].selected = !menuStatusMap[id].selected
+  console.log(2)
+  setMenuStatusMap({...menuStatusMap})
 }
