@@ -136,8 +136,6 @@ const onClickLeafMenuItem = (id, menuStatusMap, setMenuStatusMap) => { // TODO ì
     }
   })
 
-  console.log(1)
-
   setMenuStatusMap({
     ...result
   })

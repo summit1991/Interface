@@ -28,7 +28,7 @@ export default function Playground({ children }) {
 
       <Box component={"main"} sx={{ flexGrow: 1 }}>
         <Toolbar/>
-        {children}
+        <Box sx={{padding: 1}}>{children}</Box>
       </Box>
     </Box>
   )
